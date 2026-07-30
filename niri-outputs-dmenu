@@ -1,0 +1,4 @@
+
+niri msg --json outputs | jq '."eDP-1"."modes"[] |  [ .width,"x",.height,"@",.refresh_rate]|map_values(tostring)|add'
+
+echo $(niri msg --json outputs | jq -r  '.[] | ."name" + " ⋅ " + ."make" | tostring') | fuzzel --dmenu
