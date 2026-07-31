@@ -9,6 +9,11 @@ sca=󰩨  # 🔎glass⌕
 tra=  # 🔃arrow⟳
 vrr=󱥼  # 👁️eye𖦹
 inf=  # ℹ️info🛈𝐢
+siz=
+m_nme=󱈤
+m_num=
+seril=󰁲
+
 outputs=$(niri msg --json outputs)
 
 nirijq() {
@@ -91,4 +96,10 @@ case $setting_choice in
     #   echo error | menu
     # fi
   ;;
+  $inf*)
+    size=$(nirijq $choosen_name '.[$name].physical_size|tostring' | grep -o "[0-9]*,[0-9]*" | sed 's/,/x/g')mm
+    model_name=$(nirijq $choosen_name '.[$name].make')
+    model_number=$(nirijq $choosen_name '.[$name].model')
+    serial=$(nirijq $choosen_name '.[$name].serial')
+    echo -e "$siz: $size\n$m_nme: $model_name\n$m_num: $model_number\n$seril: $serial" | menu
 esac
