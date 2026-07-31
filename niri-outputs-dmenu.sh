@@ -48,7 +48,11 @@ case $setting_choice in
   󰲎*)
     modes=$(nirijq $choosen_name '.[$name]."modes"[] |  [ .width,"x",.height,"@",.refresh_rate / 1000]|map_values(tostring)|add')
     new_mod=$(printf '%s\n' "$modes"| menu ) # thanks chat :((
-    niri msg output $choosen_name mode $new_mod
+    if [[ $new_mod =~ [0-9][0-9]+.[0-9]+ ]]; then
+      niri msg output $choosen_name mode $new_mod
+    else
+      echo error | menu
+    fi
     ;;
   󱥼*)
     if [[ $current_vrr = "false" ]]; then
@@ -58,10 +62,10 @@ case $setting_choice in
     fi
   ;;
   󰓱*)
-    new_pos=$(prompt "new position")
-    echo $new_pos
-    if [[ $new_pos =~ [0-9],[0-9] ]]; then
-      niri msg output $choosen_name scale $new_pos
+  $pos*)
+    new_pos=$(prompt "new position"|sed 's/,/\ /g')
+    if [[ $new_pos =~ [0-9]\ [0-9] ]]; then
+      niri msg output $choosen_name position set $new_pos
     else
       echo error | menu
     fi
