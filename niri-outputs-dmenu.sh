@@ -1,6 +1,6 @@
 #/usr/bin/env bash
 
-menu() { fuzzel --dmenu --minimal-lines; }
+menu() { fuzzel --dmenu --minimal-lines --hide-prompt; }
 prompt() { fuzzel --dmenu --prompt-only $1; }
 
 mode=󰲎 # 🖼️ picture ⛶
@@ -24,12 +24,13 @@ nirijq() {
 
 names=$(nirijq  "" '.[] | ."name" | tostring'  )
 
-choosen_output=$(nirijq ""  '.[] | ."name" + " • " + ."make" | tostring'  | menu)
+choosen_output=$(nirijq ""  '.[] | ."name" + " • " + ."make" | tostring'  | menu )
 
 choosen_name=$(echo $choosen_output | sed 's/ •.*//g')
 
 if ! echo $choosen_output | grep [a-z] ; then
-   exit 130
+  #close if no input
+  exit 130
 fi
 
 current_mode_index=$(nirijq $choosen_name '.[$name].current_mode')
@@ -48,7 +49,7 @@ else
   choices=$choices"No variable fresh rate"
 fi
 
-setting_choice=$(echo -e $choices| fuzzel --dmenu --minimal-lines )
+setting_choice=$(echo -e $choices| menu )
 
 case $setting_choice in
   $mode*)
@@ -84,8 +85,8 @@ case $setting_choice in
     fi;;
   $tra*)
     new_trans=$(echo -e "normal\n90\n180\n270\nflipped\nflipped-90\nflipped-180\nflipped-270"|menu)
-      niri msg output $choosen_name transform $new_trans
     # if [[ $new_trans =~ (^normal$)?(flipped-)?[0-9][0-9]+ ]]; then
+      niri msg output $choosen_name transform $new_trans
     # else
     #   echo error | menu
     # fi
