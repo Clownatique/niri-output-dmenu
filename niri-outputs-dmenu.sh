@@ -29,9 +29,13 @@ nirijq() {
 
 names=$(nirijq  "" '.[] | ."name" | tostring'  )
 
-choosen_output=$(nirijq ""  '.[] | ."name" + " • " + ."make" | tostring'  | menu )
+choosen_output=$(nirijq ""  '.[] | ."make" + " (" + ."name" + ")" | tostring'  | menu )
+echo $choosen_output
+choosen_name=$(echo $choosen_output |sed 's/.*(\([^)]*\)).*/\1/')
 
-choosen_name=$(echo $choosen_output | sed 's/ •.*//g')
+  # `sed -n 's/.*(\([^)]*\)).*/\2/p' )
+  # `sed -e 's/.*\((.*)\:)/\1/g')
+echo choosen_name:$choosen_name
 
 if ! echo $choosen_output | grep [a-z] ; then
   #close if no input
@@ -46,12 +50,12 @@ current_scale=$(nirijq $choosen_name '.[$name].logical.scale')
 current_trans=$(nirijq $choosen_name '.[$name].logical.transform')
 
 
-choices="$mode :$current_mode\n$pos :$current_pos\n$sca :$current_scale\n$tra :$current_trans\n$inf\n"
+choices="$mode :$current_mode\n$pos :$current_pos\n$sca :$current_scale\n$tra :$current_trans\n$inf :More info...\n"
 if [[ $vrr_on_current = "true" ]]; then
   current_vrr=$(nirijq $choosen_name '.[$name].vrr_enabled')
   choices=$choices"$vrr :$current_vrr\n"
 else
-  choices=$choices"No variable fresh rate"
+  choices=$choices"$vrr :No variable fresh rate"
 fi
 
 setting_choice=$(echo -e $choices| menu )
