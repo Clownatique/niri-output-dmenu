@@ -3,6 +3,12 @@
 menu() { fuzzel --dmenu --minimal-lines; }
 prompt() { fuzzel --dmenu --prompt-only $1; }
 
+mode=󰲎 # 🖼️ picture ⛶
+pos=󰓱  # 🔝table𝄜⊞
+sca=󰩨  # 🔎glass⌕
+tra=  # 🔃arrow⟳
+vrr=󱥼  # 👁️eye𖦹
+inf=  # ℹ️info🛈𝐢
 outputs=$(niri msg --json outputs)
 
 nirijq() {
@@ -34,10 +40,10 @@ current_scale=$(nirijq $choosen_name '.[$name].logical.scale')
 current_trans=$(nirijq $choosen_name '.[$name].logical.transform')
 
 
-choices="󰲎 :$current_mode\n󰓱 :$current_pos\n󰩨 :$current_scale\n :$current_trans\n"
+choices="$mode :$current_mode\n$pos :$current_pos\n$sca :$current_scale\n$tra :$current_trans\n$inf\n"
 if [[ $vrr_on_current = "true" ]]; then
   current_vrr=$(nirijq $choosen_name '.[$name].vrr_enabled')
-  choices=$choices"󱥼 :$current_vrr\n"
+  choices=$choices"$vrr :$current_vrr\n"
 else
   choices=$choices"No variable fresh rate"
 fi
@@ -45,7 +51,7 @@ fi
 setting_choice=$(echo -e $choices| fuzzel --dmenu --minimal-lines )
 
 case $setting_choice in
-  󰲎*)
+  $mode*)
     modes=$(nirijq $choosen_name '.[$name]."modes"[] |  [ .width,"x",.height,"@",.refresh_rate / 1000]|map_values(tostring)|add')
     new_mod=$(printf '%s\n' "$modes"| menu ) # thanks chat :((
     if [[ $new_mod =~ [0-9][0-9]+.[0-9]+ ]]; then
@@ -54,14 +60,13 @@ case $setting_choice in
       echo error | menu
     fi
     ;;
-  󱥼*)
+  $vrr*)
     if [[ $current_vrr = "false" ]]; then
       niri msg output $choosen_name vrr on
     else 
       niri msg output $choosen_name vrr off
     fi
   ;;
-  󰓱*)
   $pos*)
     new_pos=$(prompt "new position"|sed 's/,/\ /g')
     if [[ $new_pos =~ [0-9]\ [0-9] ]]; then
@@ -70,14 +75,14 @@ case $setting_choice in
       echo error | menu
     fi
     ;;
-  󰩨*)
+  $sca*)
     new_scale=$(prompt "new scale")
     if [[ $new_scale =~ [0-9]+\.?[0-9]* ]]; then
       niri msg output $choosen_name scale $new_scale
     else
       echo error | menu
     fi;;
-  *)
+  $tra*)
     new_trans=$(echo -e "normal\n90\n180\n270\nflipped\nflipped-90\nflipped-180\nflipped-270"|menu)
       niri msg output $choosen_name transform $new_trans
     # if [[ $new_trans =~ (^normal$)?(flipped-)?[0-9][0-9]+ ]]; then
