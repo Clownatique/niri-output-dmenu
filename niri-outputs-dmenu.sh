@@ -22,9 +22,9 @@ choosen_output=$(nirijq ""  '.[] | ."name" + " • " + ."make" | tostring'  | me
 
 choosen_name=$(echo $choosen_output | sed 's/ •.*//g')
 
-# if [ -n $(echo $choosen_output | grep [a-z]* ) ]; then
-#    exit
-# fi
+if ! echo $choosen_output | grep [a-z] ; then
+   exit 130
+fi
 
 current_mode_index=$(nirijq $choosen_name '.[$name].current_mode')
 current_mode=$(nirijq $choosen_name '.[$name].modes[$index]| [.width,"x",.height,"@",.refresh_rate] |map_values(tostring)|add' $current_mode_index)
@@ -33,8 +33,16 @@ current_pos=$(nirijq $choosen_name '.[$name].logical | [.x, ",",.y]|map(tostring
 current_scale=$(nirijq $choosen_name '.[$name].logical.scale')
 current_trans=$(nirijq $choosen_name '.[$name].logical.transform')
 
-setting_choice=$(echo -e "󰲎 :$current_mode\n󱥼 :$current_vrr\n󰓱 :$current_pos\n󰩨 :$current_scale"| fuzzel --dmenu --minimal-lines )
 
+choices="󰲎 :$current_mode\n󰓱 :$current_pos\n󰩨 :$current_scale\n :$current_trans\n"
+if [[ $vrr_on_current = "true" ]]; then
+  current_vrr=$(nirijq $choosen_name '.[$name].vrr_enabled')
+  choices=$choices"󱥼 :$current_vrr\n"
+else
+  choices=$choices"No variable fresh rate"
+fi
+
+setting_choice=$(echo -e $choices| fuzzel --dmenu --minimal-lines )
 
 case $setting_choice in
   󰲎*)
