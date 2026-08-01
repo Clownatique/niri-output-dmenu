@@ -12,7 +12,7 @@ The aim of this script is to set on the fly configurations values for the output
 - Show all the outputs recognized by your system
 - Tweak the scale, choose a decent resolution+frame rate combinatioin, arrangement of your dual screen setup, toggle the variable fresh rate, or orient your screen
 
-### USAGE
+## USAGE
 
 You'll need to download this script
 
