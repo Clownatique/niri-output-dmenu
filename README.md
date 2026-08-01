@@ -1,5 +1,7 @@
 ## (WIP) Niri Outputs Manager
 
+![](./assets/mainsetting.png)
+
 The aim of this script is to set on the fly configurations values for the outputs that are plugged onto your system
 
 ** DO NOT USE THIS SOFTWARE! no check have been implemented at mode setting tweak, it can damages your screen! **
@@ -31,5 +33,3 @@ mv niri-outputs-dmenu.sh ~/.local/bin/ # but somewhere that appears in your $PAT
 ## TODO:
 
 - fix: refresh rate conversion
-- build: ensure this script may run with any dmenu program /!\
-- style: make sure nerds font are optional
