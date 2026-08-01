@@ -59,9 +59,9 @@ setting_choice=$(echo -e $choices| menu )
 
 case $setting_choice in
   $mode*)
-    modes=$(nirijq $choosen_name '.[$name]."modes"[] |  [ .width,"x",.height,"@",.refresh_rate / 1000]|map_values(tostring)|add')
-    new_mod=$(printf '%s\n' "$modes"| menu ) # thanks chat :((
+    new_mod=$(niri msg outputs | grep '^    '| sed 's/[a-wy-z(),]//g'|menu)
     if [[ $new_mod =~ [0-9][0-9]+.[0-9]+ ]]; then
+      # a solid check would be to make sure the picked mode is present in the modes
       niri msg output $choosen_name mode $new_mod
     else
       echo error | menu
