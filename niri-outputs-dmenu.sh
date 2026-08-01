@@ -30,17 +30,14 @@ nirijq() {
 names=$(nirijq  "" '.[] | ."name" | tostring'  )
 
 choosen_output=$(nirijq ""  '.[] | ."make" + " (" + ."name" + ")" | tostring'  | menu )
-echo $choosen_output
-choosen_name=$(echo $choosen_output |sed 's/.*(\([^)]*\)).*/\1/')
 
-  # `sed -n 's/.*(\([^)]*\)).*/\2/p' )
-  # `sed -e 's/.*\((.*)\:)/\1/g')
-echo choosen_name:$choosen_name
 
-if ! echo $choosen_output | grep [a-z] ; then
+if [[ ! $choosen_output =~ [a-z]+ ]] ; then
   #close if no input
   exit 130
 fi
+
+choosen_name=$(echo $choosen_output |sed 's/.*(\([^)]*\)).*/\1/')
 
 current_mode_index=$(nirijq $choosen_name '.[$name].current_mode')
 current_mode=$(nirijq $choosen_name '.[$name].modes[$index]| [.width,"x",.height,"@",.refresh_rate] |map_values(tostring)|add' $current_mode_index)
