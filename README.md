@@ -1,35 +1,34 @@
-## (WIP) Niri Outputs Manager
+# Niri Outputs Dmenu Manager
 
 ![](./assets/mainsetting.png)
+[more screenshots here...](./assets)
 
 The aim of this script is to set on the fly configurations values for the outputs that are plugged onto your system
 
-** DO NOT USE THIS SOFTWARE! no check have been implemented at mode setting tweak, it can damages your screen! **
+**Use this script at your own risk !**
 
-### Dependancies
+## FEATURES
 
-- `jq` : to use this data (json formatted by niri)
-- `fuzzel` : just yet... soon to be universal..
-- `bash` : not sh only !
-- `niri` : to retrieve data from the IPC
+- Show all the outputs recognized by your system
+- Tweak the scale, choose a decent resolution+frame rate combinatioin, arrangement of your dual screen setup, toggle the variable fresh rate, or orient your screen
 
-### Installation
+### USAGE
+
+You'll need to download this script
 
 ```bash
 wget https://raw.githubusercontent.com/Clownatique/niri-output-dmenu/refs/heads/main/niri-outputs-dmenu.sh
 ```
-
+Make it executable and put it in your path..
 
 ```bash
 chmod +x niri-outputs-dmenu.sh
 mv niri-outputs-dmenu.sh ~/.local/bin/ # but somewhere that appears in your $PATH variable
 ```
 
-## What are the currents features 
+### Programs used in this script
 
-- You can get the list of the screens detected
-- You can change the scale, mode, position, vrr, transform
-
-## TODO:
-
-- fix: refresh rate conversion
+- `jq` : to use the outputs data beautifully json formatted by niri ipc
+- `dmenu like launcher`
+- `bash` : im sorry if youre using niri from a 1Mb embedeed device..
+- `niri` : to retrieve data from the IPC
